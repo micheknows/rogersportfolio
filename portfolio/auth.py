@@ -1,6 +1,8 @@
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, current_user
-from .models import User  # import the User model
+from flask import Blueprint
+from .models import user_model  # import the User model
+
 
 # create a new blueprint for authentication routes
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -15,10 +17,10 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        user = User.get_by_username(username)
+        user_ = user_model.User.get_by_username(username)
 
-        if user and user.check_password(password):
-            login_user(user)
+        if user_ and user_.check_password(password):
+            login_user(user_)
             return redirect(url_for('index'))
         else:
             flash('Invalid username or password.')

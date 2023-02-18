@@ -9,9 +9,15 @@
 <nav class="navbar">
   <a class="navbar-brand" href="#">Michelle Rogers Portfolio</a>
   <ul class="navbar-links">
-    <li><a href="#">Home</a></li>
-    <li><a href="#">About</a></li>
-    <li><a href="#">Contact</a></li>
+    <li><a href="{{ url_for('index') }}">Home</a></li>
+    <li><a href="{{ url_for('portfolio') }}">Portfolio</a></li>
+    {% if current_user.is_authenticated %}
+      <li><a href="{{ url_for('new_portfolio_item') }}">Add Item</a></li>
+      <li><a href="{{ url_for('edit_portfolio_item', item_id=1) }}">Edit Item</a></li>
+      <li><a href="{{ url_for('logout') }}">Logout</a></li>
+    {% else %}
+      <li><a href="{{ url_for('login') }}">Login</a></li>
+    {% endif %}
   </ul>
 </nav>
 

@@ -59,15 +59,56 @@ a:hover {
   text-decoration: underline;
 }
 
+/* Forms */
+form {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.my-form-group {
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+input {
+  width: 100%;
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 2px solid var(--gray);
+}
+
+button[type="submit"] {
+  margin-top: 2rem;
+  font-size: 1.5rem;
+  padding: 0.5rem 2rem;
+  background-color: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+}
+
+button[type="submit"]:hover {
+  background-color: var(--pink);
+}
+
 /* Layout */
-.container {
+.my-container {
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 1rem;
 }
 
 /* Navigation */
-.navbar {
+.my-navbar {
   background-color: var(--background);
   color: var(--light-green);
   display: flex;
@@ -77,21 +118,21 @@ a:hover {
   padding: 0 2rem;
 }
 
-.navbar-brand {
+.my-navbar-brand {
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
   font-size: 2.5rem;
 }
 
-.navbar-links {
+.my-navbar-links {
   display: flex;
 }
 
-.navbar-links li {
+.my-navbar-links li {
   list-style: none;
 }
 
-.navbar-links a {
+.my-navbar-links a {
   color: var(--light-green);
   text-decoration: none;
   margin: 0 1rem;
@@ -103,5 +144,4 @@ footer {
   background-color: var(--background);
   color: var(--gray);
   padding: 2rem;
-  text-align: center;
-}
+

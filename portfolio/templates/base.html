@@ -3,30 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Michelle Rogers Portfolio{% endblock %}</title>
+    <meta name="viewport" content=""width="device-width, initial-scale=1" />
+<link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      crossorigin="anonymous"
+    />
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<nav class="navbar">
-  <a class="navbar-brand" href="#">Michelle Rogers Portfolio</a>
-  <ul class="navbar-links">
-    <li><a href="{{ url_for('index') }}">Home</a></li>
-    <li><a href="{{ url_for('portfolio') }}">Portfolio</a></li>
-    {% if current_user.is_authenticated %}
-      <li><a href="{{ url_for('new_portfolio_item') }}">Add Item</a></li>
-      <li><a href="{{ url_for('edit_portfolio_item', item_id=1) }}">Edit Item</a></li>
-      <li><a href="{{ url_for('logout') }}">Logout</a></li>
-    {% else %}
-      <li><a href="{{ url_for('login') }}">Login</a></li>
-    {% endif %}
+
+
+
+<nav class="my-navbar">
+  <a class="my-navbar-brand" href="#">Michelle Rogers Portfolio</a>
+  <ul class="my-navbar-links">
+    <li><a href="{{ url_for('views.home') }}">Home</a></li>
+    <li><a href="{{ url_for('views.portfolio') }}">Portfolio</a></li>
+      {% if current_user.is_authenticated and current_user.is_active %}
+        <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+      {% else %}
+        <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+      {% endif %}
+
+
   </ul>
 </nav>
 
-<div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %} {% for category, message in messages %} {% if category ==
+    'error' %}
+    <div class="alert alert-danger alter-dismissable fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% else %}
+    <div class="alert alert-success alter-dismissable fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endif %} {% endfor %} {% endif %} {% endwith %}
+
+
+<div class="my-container">
   {% block content %}{% endblock %}
 </div>
 
 <footer>
-  &copy; 2023 My Website
+  &copy; 2023 Michelle Rogers Portfolio
 </footer>
 </body>
 </html>

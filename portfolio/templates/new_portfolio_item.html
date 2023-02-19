@@ -1,20 +1,34 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block content %}
-  <h1>New Portfolio Item</h1>
-  <form action="{{ url_for('new_portfolio_item') }}" method="post">
-    <label for="title">Title</label>
-    <input type="text" id="title" name="title"><br>
-    <label for="short_desc">Short Description</label>
-    <textarea id="short_desc" name="short_desc"></textarea><br>
-    <label for="long_desc">Long Description</label>
-    <textarea id="long_desc" name="long_desc"></textarea><br>
-    <label for="image">Image</label>
-    <input type="text" id="image" name="image"><br>
-    <label for="demo_link">Demo Link</label>
-    <input type="text" id="demo_link" name="demo_link"><br>
-    <label for="github_link">GitHub Link</label>
-    <input type="text" id="github_link" name="github_link"><br>
-    <input type="submit" value="Create">
-  </form>
+  <div class="container">
+    <h1>Add New Item</h1>
+    <form method="post" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" id="title" name="title" required>
+      </div>
+      <div class="form-group">
+        <label for="short_desc">Short Description</label>
+        <textarea class="form-control" id="short_desc" name="short_desc" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="long_desc">Long Description</label>
+        <textarea class="form-control" id="long_desc" name="long_desc"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="image">Image</label>
+        <input type="file" class="form-control-file" id="image" name="image">
+      </div>
+      <div class="form-group">
+        <label for="demo_link">Demo Link</label>
+        <input type="text" class="form-control" id="demo_link" name="demo_link">
+      </div>
+      <div class="form-group">
+        <label for="github_link">GitHub Link</label>
+        <input type="text" class="form-control" id="github_link" name="github_link">
+      </div>
+      <button type="submit" class="btn btn-primary">Add Item</button>
+    </form>
+  </div>
 {% endblock %}

@@ -1,8 +1,8 @@
-from flask import Flask
+# portfolio/app.py
 
+from portfolio import create_app
 
-app = Flask(__name__)
+app = create_app()
 
-@app.route('/')
-def index():
-    return 'Hello, World!'
+if __name__ == '__main__':
+    app.run(port=8000, debug=True)

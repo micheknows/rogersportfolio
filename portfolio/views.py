@@ -1,59 +1,76 @@
-from flask import Flask, request, jsonify
-from flask_login import login_required
-from flask_sqlalchemy import SQLAlchemy
+# /portfolio/views.py
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'
-app.config['SECRET_KEY'] = 'mysecretkey'
-db = SQLAlchemy(app)
+from flask import Blueprint, render_template, make_response, request
+from flask_login import login_required, current_user
+from .models import PortfolioItemDB
 
-class PortfolioItem(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.String(500), nullable=True)
-    image_url = db.Column(db.String(200), nullable=True)
-    category = db.Column(db.String(50), nullable=True)
+views = Blueprint('views', __name__)
 
-@app.route('/portfolio', methods=['GET'])
-def portfolio_list():
-    portfolio_items = PortfolioItem.query.all()
-    return jsonify([{'id': item.id, 'title': item.title} for item in portfolio_items])
 
-@app.route('/portfolio', methods=['POST'])
+@views.route('/')
+def home():
+    response = make_response(render_template('home.html', user=current_user))
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    return response
+
+
+@views.route('/portfolio')
+def portfolio():
+    portfolio_items = PortfolioItemDB.get_all_items()
+    return render_template('portfolio.html', portfolio_items=portfolio_items)
+
+
+@views.route('/portfolio/new', methods=['GET', 'POST'])
 @login_required
-def portfolio_create():
-    data = request.json
-    title = data.get('title')
-    description = data.get('description')
-    image_url = data.get('image_url')
-    category = data.get('category')
-    item = PortfolioItem(title=title, description=description, image_url=image_url, category=category)
-    db.session.add(item)
-    db.session.commit()
-    return jsonify({'id': item.id, 'title': item.title})
+def new_portfolio_item():
+    if request.method == 'POST':
+        title = request.form['title']
+        short_desc = request.form['short_desc']
+        long_desc = request.form['long_desc']
+        image = request.files['image'].read() if 'image' in request.files else None
+        demo_link = request.form['demo_link']
+        github_link = request.form['github_link']
 
-@app.route('/portfolio/<int:item_id>', methods=['GET'])
-def portfolio_get(item_id):
-    item = PortfolioItem.query.get_or_404(item_id)
-    return jsonify({'id': item.id, 'title': item.title, 'description': item.description,
-                    'image_url': item.image_url, 'category': item.category})
+        if title and short_desc:
+            new_item = PortfolioItemDB(title=title, short_desc=short_desc, long_desc=long_desc, image=image,
+                                       demo_link=demo_link, github_link=github_link)
+            new_item.save()
+            flash('New item has been added!', 'success')
+            return redirect(url_for('views.portfolio'))
 
-@app.route('/portfolio/<int:item_id>', methods=['PUT'])
+        flash('Title and Short Description are required!', 'error')
+
+    return render_template('new_portfolio_item.html')
+
+
+@views.route('/portfolio/<int:item_id>/edit', methods=['GET', 'POST'])
 @login_required
-def portfolio_update(item_id):
-    item = PortfolioItem.query.get_or_404(item_id)
-    data = request.json
-    item.title = data.get('title', item.title)
-    item.description = data.get('description', item.description)
-    item.image_url = data.get('image_url', item.image_url)
-    item.category = data.get('category', item.category)
-    db.session.commit()
-    return jsonify({'id': item.id, 'title': item.title})
+def edit_portfolio_item(item_id):
+    item = PortfolioItemDB.get_item_by_id(item_id)
 
-@app.route('/portfolio/<int:item_id>', methods=['DELETE'])
+    if request.method == 'POST':
+        item.title = request.form['title']
+        item.short_desc = request.form['short_desc']
+        item.long_desc = request.form['long_desc']
+        item.image = request.files['image'].read() if 'image' in request.files else item.image
+        item.demo_link = request.form['demo_link']
+        item.github_link = request.form['github_link']
+
+        if item.title and item.short_desc:
+            item.save()
+            flash('Item has been updated!', 'success')
+            return redirect(url_for('views.portfolio'))
+
+        flash('Title and Short Description are required!', 'error')
+
+    return render_template('edit_portfolio_item.html', item=item)
+
+
+@views.route('/portfolio/<int:item_id>/delete', methods=['POST'])
 @login_required
-def portfolio_delete(item_id):
-    item = PortfolioItem.query.get_or_404(item_id)
-    db.session.delete(item)
-    db.session.commit()
-    return '', 204
+def delete_portfolio_item(item_id):
+    item = PortfolioItemDB.get_item_by_id(item_id)
+    if item:
+        item.delete()
+        flash('Item has been deleted!', 'success')
+    return redirect(url_for('views.portfolio'))

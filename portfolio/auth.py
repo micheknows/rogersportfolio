@@ -1,28 +1,39 @@
-from flask import render_template, request, redirect, url_for, flash
-from flask_login import login_user, current_user
-from flask import Blueprint
-from .models import user_model  # import the User model
+# /portfolio/auth.py
 
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from flask_login import login_user, logout_user, current_user, login_required
+from .models import User
 
-# create a new blueprint for authentication routes
-auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
+auth = Blueprint('auth', __name__)
 
-
-# add the login route to the auth blueprint
-@auth_bp.route('/login', methods=['GET', 'POST'])
+@auth.route('/login', methods=['GET', 'POST'])
 def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-
     if request.method == 'POST':
+        # Get the username and password from the login form
         username = request.form['username']
         password = request.form['password']
-        user_ = user_model.User.get_by_username(username)
 
-        if user_ and user_.check_password(password):
-            login_user(user_)
-            return redirect(url_for('index'))
+        # Try to find the user in the database
+        user = User.query.filter_by(username=username).first()
+
+        # If the user exists and the password is correct, log them in
+        if user and user.check_password(password):
+            flash("Successfully logged in", category='success')
+            login_user(user)
+            return redirect(url_for('views.home'))
         else:
-            flash('Invalid username or password.')
+            # If the user doesn't exist or the password is incorrect, show an error message
+            error = 'Invalid username or password.'
+            flash(error, category='error')
+            return render_template('login.html')
 
-    return render_template('login.html')
+    else:
+        # If the request is GET, just show the login page
+        return render_template('login.html')
+
+@auth.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('views.home'))
+

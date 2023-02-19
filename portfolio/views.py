@@ -36,6 +36,22 @@ def portfolio():
 
     return render_template('portfolio.html', portfolio_items=portfolio_items, **template_context)
 
+@app.route('/github-webhook/', methods=['POST'])
+def github_webhook():
+    # Verify the authenticity of the webhook request using the secret key
+    secret_key = 'your-secret-key'  # Replace with your own secret key
+    signature = request.headers.get('X-Hub-Signature')
+    if signature != 'sha1=' + hmac.new(secret_key.encode('utf-8'), request.data, hashlib.sha1).hexdigest():
+        return 'Invalid signature', 403
+
+    # Pull the latest changes from the GitHub repository
+    subprocess.call(['git', 'pull'])
+
+    # Restart the Flask app
+    os.kill(os.getpid(), signal.SIGTERM)
+
+    return 'Webhook received', 200
+
 @views.route('/portfolio/new', methods=['GET', 'POST'])
 @login_required
 def new_portfolio_item():

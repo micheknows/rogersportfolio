@@ -27,6 +27,8 @@
     <li><a href="{{ url_for('views.home') }}">Home</a></li>
     <li><a href="{{ url_for('views.portfolio') }}">Portfolio</a></li>
       {% if current_user.is_authenticated and current_user.is_active %}
+        <li><a href="{{ url_for('views.show_all_tags') }}">View Tags</a></li>
+        <li><a href="{{ url_for('views.view_all_subtags') }}">View Sub-Tags</a></li>
         <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
       {% else %}
         <li><a href="{{ url_for('auth.login') }}">Login</a></li>

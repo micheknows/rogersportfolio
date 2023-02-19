@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+  <h1>Subtags</h1>
+  <table class="subtags-table">
+
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Tag</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for subtag in subtags %}
+        <tr>
+          <td>{{ subtag.name }}</td>
+          <td>{{ subtag.tag.name }}</td>
+          <td><a href="{{ url_for('views.edit_subtag', subtag_id=subtag.id) }}">Edit</a></td>
+          <td>      <form action="{{ url_for('views.delete_subtag', subtag_id=subtag.id) }}" method="post">
+        <input type="hidden" name="_method" value="delete">
+        <button type="submit">Delete</button>
+      </form></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a href="{{ url_for('views.create_subtag') }}"><button>Add New Subtag</button></a>
+{% endblock %}

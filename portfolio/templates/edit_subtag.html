@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Edit Subtag</h1>
+  <form method="POST" action="{{ url_for('views.edit_subtag', subtag_id=subtag.id) }}">
+    {{ form.hidden_tag() }}
+    {{ form.name.label }} {{ form.name }}
+    {{ form.description.label }} {{ form.description }}
+    {{ form.submit }}
+  </form>
+{% endblock %}

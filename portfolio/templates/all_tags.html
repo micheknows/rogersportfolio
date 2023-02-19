@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>All Tags</h1>
+  <ul>
+    {% for tag in tags %}
+<li class="tag-list-item">
+  <a href="{{ url_for('views.edit_tag', tag_id=tag.id) }}">{{ tag.name }}</a>
+  <a href="{{ url_for('views.delete_tag', pk=tag.id) }}" class="delete-tag-link">(Delete)</a>
+</li>
+
+
+    {% endfor %}
+  </ul>
+  <br>
+  <a href="{{ url_for('views.create_tag') }}" class="btn btn-primary">Create Tag</a>
+{% endblock %}

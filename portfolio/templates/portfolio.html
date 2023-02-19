@@ -8,9 +8,26 @@
             <a href="{{ url_for('views.new_portfolio_item') }}" class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>New Item</a>
         </div>
         {% endif %}
+
+                <form method="get">
+            <div class="mb-3">
+                <label for="tags" class="form-label">Filter by tag:</label>
+                <select name="tags" id="tags" class="form-select" multiple>
+                    {% for tag in all_tags %}
+                        <option value="{{ tag.id }}" {% if tag.id in selected_tags %}selected{% endif %}>{{ tag.name }}</option>
+                        {% for subtag in tag.subtags %}
+                            <option value="{{ subtag.id }}" {% if subtag.id in selected_tags %}selected{% endif %}>&emsp;&emsp;{{ subtag.name }}</option>
+                        {% endfor %}
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Filter</button>
+            <a href="{{ url_for('views.portfolio') }}" class="btn btn-secondary">Clear Filters</a>
+        </form>
+
         {% if portfolio_items %}
         <div class="row">
-            {% for item in portfolio_items %}
+            {% for item in portfolio_items|reverse %}
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card mb-10">
                     {% if item.image %}

@@ -36,7 +36,7 @@ def portfolio():
 
     return render_template('portfolio.html', portfolio_items=portfolio_items, **template_context)
 
-@app.route('/github-webhook/', methods=['POST'])
+@views.route('/github-webhook/', methods=['POST'])
 def github_webhook():
     # Verify the authenticity of the webhook request using the secret key
     secret_key = 'phonicssecret'  # Replace with your own secret key

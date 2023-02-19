@@ -39,7 +39,7 @@ def portfolio():
 @app.route('/github-webhook/', methods=['POST'])
 def github_webhook():
     # Verify the authenticity of the webhook request using the secret key
-    secret_key = 'your-secret-key'  # Replace with your own secret key
+    secret_key = 'phonicssecret'  # Replace with your own secret key
     signature = request.headers.get('X-Hub-Signature')
     if signature != 'sha1=' + hmac.new(secret_key.encode('utf-8'), request.data, hashlib.sha1).hexdigest():
         return 'Invalid signature', 403

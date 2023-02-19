@@ -27,6 +27,7 @@ def create_app():
 
     db.init_app(app)
 
+    # just forcing a commit
 
 
     from .views import views

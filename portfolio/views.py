@@ -1,8 +1,10 @@
 # /portfolio/views.py
+from flask import Blueprint
+views = Blueprint('views', __name__)
 
 import base64
 
-from flask import Blueprint, render_template, make_response, request, redirect, url_for, flash, abort
+from flask import render_template, make_response, request, redirect, url_for, flash, abort
 from flask_login import login_required, current_user
 from .models import PortfolioItemDB, Tag, Subtag
 from flask_wtf import FlaskForm
@@ -12,7 +14,7 @@ from wtforms.validators import DataRequired, Length
 
 
 
-views = Blueprint('views', __name__)
+
 
 from .forms import TagForm, PortfolioItemForm
 from .models import Tag, Subtag

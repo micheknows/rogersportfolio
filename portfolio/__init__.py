@@ -2,11 +2,11 @@
 
 # /portfolio/__init__.py
 
-from flask import Flask
+
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask import Flask
-from markupsafe import Markup
+
 
 
 db = SQLAlchemy()
@@ -29,16 +29,18 @@ def create_app():
 
     db.init_app(app)
 
-    # just forcing a commit
-
-
-    from .views import views
-    from .auth import auth
-
-    app.register_blueprint(views, url_prefix='/')
-    app.register_blueprint(auth, url_prefix='/')
-
     from .models import User
+
+    #Use `with app.app_context()` within the `create_app` definition.
+    with app.app_context():
+
+        from .auth import auth
+        from .views import views
+
+        app.register_blueprint(views, url_prefix='/')
+        app.register_blueprint(auth, url_prefix='/')
+
+
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'

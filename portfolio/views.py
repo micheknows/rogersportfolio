@@ -6,9 +6,9 @@ import base64
 
 from flask import render_template, make_response, request, redirect, url_for, flash, abort
 from flask_login import login_required, current_user
-from .models import PortfolioItemDB, Tag, Subtag
+from .models import PortfolioItemDB
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, SelectField, TextAreaField
+from wtforms import StringField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Length
 
 
@@ -144,8 +144,7 @@ def delete_tag(pk):
         return redirect(url_for('views.show_all_tags'))
     return render_template('delete_tag.html', tag=tag)
 
-from io import BytesIO
-from PIL import Image
+
 
 @views.route('/edit-portfolio-item/<int:item_id>', methods=['GET', 'POST'])
 @login_required

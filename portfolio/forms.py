@@ -1,9 +1,8 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
-from wtforms import StringField, SubmitField, FileField, SelectMultipleField, TextAreaField
-from wtforms.validators import DataRequired, Length, InputRequired
+from wtforms import StringField, SubmitField, FileField, TextAreaField
+from wtforms.validators import DataRequired, Length
 
-from .app import app
 from .models import Tag, Subtag
 from wtforms.fields import SelectMultipleField
 

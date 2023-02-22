@@ -29,7 +29,7 @@ def create_app():
 
     db.init_app(app)
 
-    from portfolio.models import User
+    from .models import User
 
     #Use `with app.app_context()` within the `create_app` definition.
     with app.app_context():

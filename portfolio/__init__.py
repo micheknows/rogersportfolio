@@ -15,7 +15,7 @@ db = SQLAlchemy()
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'lkajgakdjl;gjasdfkjlakjsdfj'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://micheknows:ph0nics3@localhost/portfolio'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://micheknows:Ph0nics!!!@localhost/micheknows$portfolio'
 
     @app.template_filter('reverse')
     def reverse_filter(s):

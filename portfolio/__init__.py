@@ -15,7 +15,7 @@ db = SQLAlchemy()
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'lkajgakdjl;gjasdfkjlakjsdfj'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://micheknows:Ph0nics!!!@localhost/micheknows$portfolio'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://micheknows:Ph0nics!!!@micheknows.mysql.pythonanywhere-services.com/micheknows$portfolio'
     app.config['SQLALCHEMY_POOL_RECYCLE'] = 280
 
     @app.template_filter('reverse')

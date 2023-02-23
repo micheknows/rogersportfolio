@@ -18,6 +18,10 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
     @staticmethod
     def get_by_username(username):
         return User.query.filter_by(username=username).first()
